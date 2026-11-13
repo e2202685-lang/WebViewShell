@@ -238,6 +238,8 @@ class MainActivity : AppCompatActivity() {
 
             // http/https and other in-page schemes always stay inside the app.
             if (scheme == null || scheme in IN_PAGE_SCHEMES) return false
+            if (scheme == "file") return false
+
 
             // tel:, mailto:, market:, intent: ... stay blocked by default so the
             // user never silently leaves the app.
