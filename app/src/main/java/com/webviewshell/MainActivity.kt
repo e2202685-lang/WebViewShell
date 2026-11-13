@@ -135,7 +135,6 @@ class MainActivity : AppCompatActivity() {
         wireInteractions()
 
         // Never let a stalled page keep the splash up forever.
-             MobileAds.initialize(this) {}
           val bannerAdView = findViewById<BannerAdView>(R.id.yandexBanner)
      bannerAdView.setAdSize(BannerAdSize.sticky(this, resources.displayMetrics.widthPixels.div(resources.displayMetrics.density).toInt()))
      bannerAdView.loadAd(AdRequest.Builder("R-M-20100709-3").build())
