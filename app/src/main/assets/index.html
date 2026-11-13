@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Отман</title>
+<style>
+  :root{
+    --blue: #1d4ed8;
+    --blue-dark: #1e3a8a;
+    --orange: #f97316;
+    --green: #22c55e;
+    --bg: #eef3fb;
+    --card: #ffffff;
+    --text: #10213f;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+  }
+
+  body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  .card{
+    width: 100%;
+    max-width: 560px;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: 0 10px 30px rgba(29, 78, 216, 0.12);
+    border-top: 6px solid var(--blue);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::after{
+    content: "";
+    position: absolute;
+    right: -40px;
+    bottom: -40px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.10;
+  }
+
+  h1{
+    margin: 0 0 28px 0;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--blue-dark);
+    letter-spacing: 0.5px;
+  }
+
+  .btn{
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn:active{
+    transform: scale(0.98);
+  }
+
+  .btn-primary{
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35);
+  }
+
+  .btn-primary:hover{
+    background: var(--blue-dark);
+  }
+
+  .choose-group{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .btn-download{
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.35);
+    margin-top: 22px;
+  }
+
+  .btn-download:hover{
+    background: #ea6a0d;
+  }
+
+  .btn-download:disabled{
+    background: #cbd5e1;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary{
+    background: #eef3fb;
+    color: var(--blue-dark);
+    border: 2px solid rgba(29, 78, 216, 0.25);
+    margin-bottom: 22px;
+  }
+
+  .btn-secondary:hover{
+    background: #e2e9f7;
+  }
+
+  #fileInput{
+    display: none;
+  }
+
+  #screen2{
+    display: none;
+  }
+
+  .gallery{
+    display: grid;
+    gap: 22px;
+    margin-bottom: 8px;
+  }
+
+  .photo-card{
+    background: #f4f7fd;
+    border: 2px dashed rgba(29, 78, 216, 0.25);
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .preview-wrap{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    margin-bottom: 16px;
+  }
+
+  .preview-wrap img{
+    max-width: 100%;
+    max-height: 260px;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .size-block{
+    margin-bottom: 14px;
+  }
+
+  .size-label{
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    margin-bottom: 10px;
+  }
+
+  .size-inputs{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .size-field{
+    flex: 1;
+  }
+
+  .size-field label{
+    display: block;
+    font-size: 12px;
+    color: #5b6b8c;
+    margin-bottom: 6px;
+  }
+
+  .size-field input[type="number"]{
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid rgba(29, 78, 216, 0.25);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+    background: #fff;
+  }
+
+  .size-field input[type="number"]:focus{
+    border-color: var(--green);
+  }
+
+  .size-x{
+    padding-top: 18px;
+    font-weight: 800;
+    color: var(--orange);
+  }
+
+  .btn-apply{
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35);
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+
+  .btn-apply:hover{
+    background: var(--blue-dark);
+  }
+
+  .status{
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 8px;
+    min-height: 16px;
+  }
+
+  .status.ok{ color: var(--green); }
+
+  .bulk-block{
+    background: #eef3fb;
+    border: 2px solid rgba(29, 78, 216, 0.2);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card" id="screen1">
+    <h1>Отман</h1>
+    <div class="choose-group">
+      <button class="btn btn-primary" id="choose1Btn">Выбрать 1 фото</button>
+      <button class="btn btn-primary" id="choose2Btn">Выбрать 2 фото</button>
+      <button class="btn btn-primary" id="choose4Btn">Выбрать 4 фото</button>
+    </div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="card" id="screen2">
+    <button class="btn btn-secondary" id="chooseOtherBtn">Выбрать другое</button>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="bulk-block" id="bulkBlock" style="display:none;">
+      <div class="size-label">Изменить сразу все</div>
+      <div class="size-inputs">
+        <div class="size-field">
+          <label>Ширина</label>
+          <input type="number" min="1" id="bulkWidthInput">
+        </div>
+        <span class="size-x">×</span>
+        <div class="size-field">
+          <label>Высота</label>
+          <input type="number" min="1" id="bulkHeightInput">
+        </div>
+      </div>
+      <button class="btn btn-apply" id="bulkApplyBtn" style="margin-top:12px;">Изменить размер всем</button>
+    </div>
+
+    <button class="btn btn-download" id="downloadBtn" disabled>Скачать все</button>
+  </div>
+
+  <canvas id="workCanvas" style="display:none;"></canvas>
+
+  <script>
+    const screen1 = document.getElementById('screen1');
+    const screen2 = document.getElementById('screen2');
+    const choose1Btn = document.getElementById('choose1Btn');
+    const choose2Btn = document.getElementById('choose2Btn');
+    const choose4Btn = document.getElementById('choose4Btn');
+    const chooseOtherBtn = document.getElementById('chooseOtherBtn');
+    const fileInput = document.getElementById('fileInput');
+    const gallery = document.getElementById('gallery');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const bulkBlock = document.getElementById('bulkBlock');
+    const bulkWidthInput = document.getElementById('bulkWidthInput');
+    const bulkHeightInput = document.getElementById('bulkHeightInput');
+    const bulkApplyBtn = document.getElementById('bulkApplyBtn');
+    const workCanvas = document.getElementById('workCanvas');
+    const ctx = workCanvas.getContext('2d');
+
+    let wantedCount = 1;
+    let photos = []; // { id, originalImage, originalWidth, originalHeight, resizedDataUrl }
+    let cardRefs = []; // { imgEl, widthInput, heightInput, statusEl }
+
+    function openPicker(count){
+      wantedCount = count;
+      fileInput.multiple = count > 1;
+      fileInput.value = '';
+      fileInput.click();
+    }
+
+    choose1Btn.addEventListener('click', () => openPicker(1));
+    choose2Btn.addEventListener('click', () => openPicker(2));
+    choose4Btn.addEventListener('click', () => openPicker(4));
+    chooseOtherBtn.addEventListener('click', () => {
+      screen2.style.display = 'none';
+      screen1.style.display = 'block';
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files || []).slice(0, wantedCount);
+      if (!files.length) return;
+
+      photos = [];
+      gallery.innerHTML = '';
+      downloadBtn.disabled = true;
+
+      let loaded = 0;
+      files.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const photo = {
+              id: 'photo_' + idx + '_' + Date.now(),
+              originalImage: img,
+              originalWidth: img.naturalWidth,
+              originalHeight: img.naturalHeight,
+              resizedDataUrl: null
+            };
+            photos[idx] = photo;
+            loaded++;
+            if (loaded === files.length){
+              renderGallery();
+              screen1.style.display = 'none';
+              screen2.style.display = 'block';
+            }
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    function resizePhoto(photo, w, h){
+      workCanvas.width = w;
+      workCanvas.height = h;
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(photo.originalImage, 0, 0, w, h);
+      photo.resizedDataUrl = workCanvas.toDataURL('image/png');
+      photo.resizedWidth = w;
+      photo.resizedHeight = h;
+    }
+
+    function renderGallery(){
+      gallery.innerHTML = '';
+      cardRefs = [];
+      gallery.style.gridTemplateColumns = photos.length > 1 ? 'repeat(auto-fit, minmax(220px, 1fr))' : '1fr';
+      bulkBlock.style.display = photos.length > 1 ? 'block' : 'none';
+      if (photos.length > 1){
+        bulkWidthInput.value = photos[0].originalWidth;
+        bulkHeightInput.value = photos[0].originalHeight;
+      }
+
+      photos.forEach((photo, index) => {
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+
+        card.innerHTML = `
+          <div class="preview-wrap">
+            <img alt="Фото ${index + 1}">
+          </div>
+          <div class="size-block">
+            <div class="size-label">Размер (фото ${index + 1})</div>
+            <div class="size-inputs">
+              <div class="size-field">
+                <label>Ширина</label>
+                <input type="number" min="1" class="widthInput">
+              </div>
+              <span class="size-x">×</span>
+              <div class="size-field">
+                <label>Высота</label>
+                <input type="number" min="1" class="heightInput">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-apply">Изменить размер</button>
+          <div class="status"></div>
+        `;
+
+        const imgEl = card.querySelector('img');
+        const widthInput = card.querySelector('.widthInput');
+        const heightInput = card.querySelector('.heightInput');
+        const applyBtn = card.querySelector('.btn-apply');
+        const statusEl = card.querySelector('.status');
+
+        imgEl.src = photo.originalImage.src;
+        widthInput.value = photo.originalWidth;
+        heightInput.value = photo.originalHeight;
+
+        applyBtn.addEventListener('click', () => {
+          const w = Math.max(1, parseInt(widthInput.value, 10) || photo.originalWidth);
+          const h = Math.max(1, parseInt(heightInput.value, 10) || photo.originalHeight);
+
+          resizePhoto(photo, w, h);
+          imgEl.src = photo.resizedDataUrl;
+
+          statusEl.textContent = 'Готово: ' + w + '×' + h;
+          statusEl.classList.add('ok');
+
+          downloadBtn.disabled = !photos.some(p => p.resizedDataUrl);
+        });
+
+        cardRefs.push({ imgEl, widthInput, heightInput, statusEl });
+        gallery.appendChild(card);
+      });
+    }
+
+    bulkApplyBtn.addEventListener('click', () => {
+      if (!photos.length) return;
+
+      const w = Math.max(1, parseInt(bulkWidthInput.value, 10) || 1);
+      const h = Math.max(1, parseInt(bulkHeightInput.value, 10) || 1);
+
+      photos.forEach((photo, index) => {
+        resizePhoto(photo, w, h);
+        const refs = cardRefs[index];
+        if (refs){
+          refs.imgEl.src = photo.resizedDataUrl;
+          refs.widthInput.value = w;
+          refs.heightInput.value = h;
+          refs.statusEl.textContent = 'Готово: ' + w + '×' + h;
+          refs.statusEl.classList.add('ok');
+        }
+      });
+
+      downloadBtn.disabled = !photos.some(p => p.resizedDataUrl);
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const readyPhotos = photos.filter(p => p.resizedDataUrl);
+      if (!readyPhotos.length) return;
+
+      readyPhotos.forEach((photo, i) => {
+        // небольшая задержка между скачиваниями, чтобы браузер
+        // не блокировал несколько файлов подряд как всплывающие окна
+        setTimeout(() => {
+          const a = document.createElement('a');
+          a.href = photo.resizedDataUrl;
+          a.download = 'photo-' + (i + 1) + '-' + photo.resizedWidth + 'x' + photo.resizedHeight + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }, i * 300);
+      });
+    });
+  </script>
+
+</body>
+</html>
