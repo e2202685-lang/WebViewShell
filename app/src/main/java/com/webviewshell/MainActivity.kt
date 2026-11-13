@@ -41,6 +41,10 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.yandex.mobile.ads.banner.BannerAdSize
+import com.yandex.mobile.ads.banner.BannerAdView
+import com.yandex.mobile.ads.common.AdRequest
+import com.yandex.mobile.ads.common.MobileAds
 
 /**
  * A clean, single-activity WebView shell.
@@ -132,7 +136,12 @@ class MainActivity : AppCompatActivity() {
         wireInteractions()
 
         // Never let a stalled page keep the splash up forever.
-        bannerAdView.setAdUnitId("R-M-20100709-3")
+             MobileAds.initialize(this) {}
+     val bannerAdView = findViewById<BannerAdView>(R.id.yandexBanner)
+     bannerAdView.setAdUnitId("R-M-20100709-3")
+     bannerAdView.setAdSize(BannerAdSize.stickySize(this, resources.displayMetrics.widthPixels.div(resources.displayMetrics.density).toInt()))
+     bannerAdView.loadAd(AdRequest.Builder().build())
+
 
 
         val restored = savedInstanceState?.let { webView.restoreState(it) }
