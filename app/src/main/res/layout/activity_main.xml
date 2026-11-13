@@ -83,5 +83,10 @@
         android:clickable="true"
         android:focusable="true"
         android:visibility="gone" />
+    <com.yandex.mobile.ads.banner.BannerAdView
+        android:id="@+id/yandexBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 
 </FrameLayout>
