@@ -44,7 +44,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yandex.mobile.ads.banner.BannerAdSize
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.AdRequest
-import com.yandex.mobile.ads.common.MobileAds
 
 /**
  * A clean, single-activity WebView shell.
@@ -137,10 +136,10 @@ class MainActivity : AppCompatActivity() {
 
         // Never let a stalled page keep the splash up forever.
              MobileAds.initialize(this) {}
-     val bannerAdView = findViewById<BannerAdView>(R.id.yandexBanner)
-     bannerAdView.setAdUnitId("R-M-20100709-3")
-     bannerAdView.setAdSize(BannerAdSize.stickySize(this, resources.displayMetrics.widthPixels.div(resources.displayMetrics.density).toInt()))
-     bannerAdView.loadAd(AdRequest.Builder().build())
+          val bannerAdView = findViewById<BannerAdView>(R.id.yandexBanner)
+     bannerAdView.setAdSize(BannerAdSize.sticky(this, resources.displayMetrics.widthPixels.div(resources.displayMetrics.density).toInt()))
+     bannerAdView.loadAd(AdRequest.Builder("R-M-20100709-3").build())
+
 
 
 
