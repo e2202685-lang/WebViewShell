@@ -214,7 +214,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("com.yandex.ads.mediation:mobileads:8.6.0")
+    implementation("com.yandex.android:mobileads:8.6.0")
     implementation("com.yandex.ads.mediation:mobileads-mytarget:5.51.2.2")
+
 
 }
