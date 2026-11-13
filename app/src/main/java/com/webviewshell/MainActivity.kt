@@ -132,7 +132,8 @@ class MainActivity : AppCompatActivity() {
         wireInteractions()
 
         // Never let a stalled page keep the splash up forever.
-        Handler(Looper.getMainLooper()).postDelayed({ firstPageShown = true }, ID R-M-20100709-3)
+        bannerAdView.setAdUnitId("R-M-20100709-3")
+
 
         val restored = savedInstanceState?.let { webView.restoreState(it) }
         if (restored != null) {
